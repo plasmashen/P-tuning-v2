@@ -6,6 +6,7 @@ SUPERGLUE_DATASETS = list(superglue_tasks.keys())
 NER_DATASETS = ["conll2003", "conll2004", "ontonotes"]
 SRL_DATASETS = ["conll2005", "conll2012"]
 QA_DATASETS = ["squad", "squad_v2"]
+SA_DATASETS = ["amazon", "yelp", "sst", "imdb"]
 
 
 TASKS = ["glue", "superglue", "ner", "srl", "qa"]
