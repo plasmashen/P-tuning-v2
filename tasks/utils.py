@@ -9,9 +9,9 @@ QA_DATASETS = ["squad", "squad_v2"]
 SA_DATASETS = ["amazon", "yelp", "sst", "imdb"]
 
 
-TASKS = ["glue", "superglue", "ner", "srl", "qa"]
+TASKS = ["glue", "superglue", "ner", "srl", "qa", "sa"]
 
-DATASETS = GLUE_DATASETS + SUPERGLUE_DATASETS + NER_DATASETS + SRL_DATASETS + QA_DATASETS
+DATASETS = GLUE_DATASETS + SUPERGLUE_DATASETS + NER_DATASETS + SRL_DATASETS + QA_DATASETS + SA_DATASETS
 
 ADD_PREFIX_SPACE = {
     'bert': False,

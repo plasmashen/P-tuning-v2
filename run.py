@@ -115,7 +115,7 @@ if __name__ == '__main__':
 
     elif data_args.task_name.lower() == "sa":
         assert data_args.dataset_name.lower() in SA_DATASETS
-        from tasks.qa.get_trainer import get_trainer
+        from tasks.sa.get_trainer import get_trainer
 
     else:
         raise NotImplementedError('Task {} is not implemented. Please choose a task from: {}'.format(data_args.task_name, ", ".join(TASKS)))
