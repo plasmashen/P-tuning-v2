@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="NESA 139" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="NESA 137">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/P-tuning-v2" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="NESA 139">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/P-tuning-v2" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="NESA 54">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/P-tuning-v2" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>

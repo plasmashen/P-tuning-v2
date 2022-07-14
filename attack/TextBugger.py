@@ -317,7 +317,7 @@ if __name__ == '__main__':
     parser.add_argument("--attack_method", type=str, required=True, choices=["textbugger", "textfooler", "pwws", "bae",
                                                                       "deepwordbug", "pruthi", "checklist",
                                                                       "bert_attack", "a2t"])
-    parser.add_argument("--max_rate", default=0.1, type=float)
+    parser.add_argument("--max_rate", default=0.2, type=float)
     parser.add_argument("--model_name", default='amazon-bert-normal', type=str)
 
     args = parser.parse_args()
