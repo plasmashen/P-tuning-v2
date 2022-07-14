@@ -38,6 +38,8 @@ from transformers.modeling_utils import (
 )
 from transformers.utils import logging
 from transformers.models.bert.configuration_bert import BertConfig
+import sys
+sys.path.append("..")
 from model.prefix_encoder import PrefixEncoder
 
 logger = logging.get_logger(__name__)
@@ -526,6 +528,7 @@ class BertEncoder(nn.Module):
             output_attentions=False,
             output_hidden_states=False,
             return_dict=True,
+            top=None
     ):
         all_hidden_states = () if output_hidden_states else None
         all_self_attentions = () if output_attentions else None
@@ -563,7 +566,7 @@ class BertEncoder(nn.Module):
                     encoder_attention_mask,
                 )
             else:
-                if i == 0:
+                if i == 0 or not top:
                     layer_outputs = layer_module(
                         hidden_states,
                         attention_mask,
@@ -574,8 +577,11 @@ class BertEncoder(nn.Module):
                         output_attentions,
                     )
                 else:
-                    idx = all_self_attentions[-1].sum(1)[:, 0].sort(dim=-1).indices[:, -12:-6]
-                    replace_val = -10000*torch.ones([idx.shape[0], 1, 1, 9], dtype=torch.float32, device=attention_mask.device)
+                    if top[0]==0:
+                        idx = all_self_attentions[-1].sum(1)[:, 0].sort(dim=-1).indices[:, -top[1]:]
+                    else:
+                        idx = all_self_attentions[-1].sum(1)[:, 0].sort(dim=-1).indices[:, -top[1]:-top[0]]
+                    replace_val = -10000*torch.ones([idx.shape[0], 1, 1, top[1]-top[0]], dtype=torch.float32, device=attention_mask.device)
                     attention_mask_t = torch.scatter(attention_mask, -1, idx.unsqueeze(1).unsqueeze(1), replace_val)
                     layer_outputs = layer_module(
                         hidden_states,
@@ -899,6 +905,7 @@ class BertModel(BertPreTrainedModel):
             output_attentions=None,
             output_hidden_states=None,
             return_dict=None,
+            top=None
     ):
         r"""
         encoder_hidden_states  (:obj:`torch.FloatTensor` of shape :obj:`(batch_size, sequence_length, hidden_size)`, `optional`):
@@ -997,6 +1004,7 @@ class BertModel(BertPreTrainedModel):
             output_attentions=output_attentions,
             output_hidden_states=output_hidden_states,
             return_dict=return_dict,
+            top=top
         )
         sequence_output = encoder_outputs[0]
         pooled_output = self.pooler(sequence_output) if self.pooler is not None else None
@@ -1487,6 +1495,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
             output_attentions=None,
             output_hidden_states=None,
             return_dict=None,
+            top=None
     ):
         r"""
         labels (:obj:`torch.LongTensor` of shape :obj:`(batch_size,)`, `optional`):
@@ -1506,6 +1515,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
             output_attentions=output_attentions,
             output_hidden_states=output_hidden_states,
             return_dict=return_dict,
+            top=top
         )
 
         pooled_output = outputs[1]
@@ -1870,6 +1880,7 @@ class BertPrefixForSequenceClassification(BertPreTrainedModel):
             output_attentions=None,
             output_hidden_states=None,
             return_dict=None,
+            top=None
     ):
         return_dict = return_dict if return_dict is not None else self.config.use_return_dict
 
@@ -1889,6 +1900,7 @@ class BertPrefixForSequenceClassification(BertPreTrainedModel):
             output_hidden_states=output_hidden_states,
             return_dict=return_dict,
             past_key_values=past_key_values,
+            top=top
         )
 
         pooled_output = outputs[1]
@@ -1967,6 +1979,7 @@ class BertPromptForSequenceClassification(BertPreTrainedModel):
             output_attentions=None,
             output_hidden_states=None,
             return_dict=None,
+            top=None
     ):
         return_dict = return_dict if return_dict is not None else self.config.use_return_dict
 
@@ -1992,6 +2005,7 @@ class BertPromptForSequenceClassification(BertPreTrainedModel):
             output_hidden_states=output_hidden_states,
             return_dict=return_dict,
             # past_key_values=past_key_values,
+            top=top
         )
 
         # pooled_output = outputs[1]

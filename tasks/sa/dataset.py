@@ -18,8 +18,8 @@ class SADataset():
     def __init__(self, tokenizer: AutoTokenizer, data_args, training_args) -> None:
         super().__init__()
 
-        raw_datasets = pd.read_csv("/home/Lujia/Datasets/sentiment_data/{}/train.tsv".format(data_args.dataset_name),
-                                   sep="\t")
+        # raw_datasets = pd.read_csv("/home/Lujia/Datasets/sentiment_data/{}/train.tsv".format(data_args.dataset_name),
+        #                            sep="\t")
         self.tokenizer = tokenizer
         self.data_args = data_args
         # labels
